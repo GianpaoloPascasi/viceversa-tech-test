@@ -1,4 +1,5 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 import { AddMessagesBody } from '../../../model/message/add.model';
 import { UserSession } from '../../auth/user-session/user-session';
 import { MessageService } from '../service/message.service';
@@ -10,8 +11,11 @@ export class MessageController {
     private readonly session: UserSession,
   ) {}
 
+  @ApiBody({
+    type: AddMessagesBody,
+  })
   @Post('add-messages')
-  addMessages(body: AddMessagesBody) {
+  addMessages(@Body() body: AddMessagesBody) {
     return this.messageService.addMessages(body);
   }
 

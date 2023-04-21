@@ -134,3 +134,7 @@ Ho usato JWT come autenticazione perchè è il sistema più usato ma ho preferit
 implementarlo non richiederebbe un grosso refactor per come è progettato nest (i middleware nello specifico, sarebbe stato lo stesso per express eventualmente)
 Ho usato Typeorm perchè supporta moltissimi DBMS. Dovremo dare subito una struttura precisa ai dati ma allo stesso tempo quando si passerà da un db in-memory (SQLite in questo caso) a uno tradizionale non dovremmo avere grossi problemi di refactoring (eccetto i formati dati, che per una preview come questa sono molto base).
 Dockerizzo il tutto per avviare in modo semplice il backend.
+
+workflow:
+1- create account
+2- login

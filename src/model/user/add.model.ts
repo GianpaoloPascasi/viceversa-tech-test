@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AddMessagesBody {
+export class UserApiBody {
   @ApiProperty()
   user: string;
 
   @ApiProperty()
-  messages: Array<string>;
+  password: string;
 }
