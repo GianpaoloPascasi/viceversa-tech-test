@@ -61,6 +61,35 @@ In the future we expect more events to be triggered, of different kind (ex. even
 - Please include a postman export in the repo to try your project
 
 
+## ----> Gianpaolo's explanations <----
+
+# Framework: NestJS
+This project was bootstrapped using `NestJS` because it's scalable, has a lot of addons and allows us to give a more solid structure to the project. Cons: it's slower in setting up than Express. ExpressJS gives us more freedom and surely is faster for a first-use but you need to be strict and keep an eye on the project struture to not fall in a mess.
+
+# Auth: simple JWT
+I used a widely npm packahe `jsonwebtoken` that gives us enough security to not let people join the service without signup. It's not complex to setup, it's sufficient for the purpose of the project. Using other modules like Passport costed too much time and I don't think is mandatory. Plus, for how NestJS works (but also Express) we can still do a little refactor and put in place another auth system.
+I didn't manage cases like double jwt existing for a user (both not expired but issued in different times).
+
+# In memory storage: TypeORM + SQLite
+I choose to use `TypeORM` because it will help us in case the project gets bigger. `SQLite` was a forced choice because it's the only dbms that allows in-memory storage. I could also use something like Redis (when i read or listen to "in-memory storage" i think to that) but I think that TypeORM is a better choice because:
+- Supports the most used DBMS out there. Changing the DMBS during early stages of development requires little to no refactoring at all. 
+- Data can be managed used the powerful TypeORM/SQL apis.
+- SQLite gives us the SQL strenght without need to setup a database, so for development purposes saves a little time.
+
+# Use the app
+- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. 
+- Second method: using docker-compose, run `docker-compose up` in the project root.
+The server can be reached at localhost:3000
+
+
+## How the app works
+- first of all you need to setup an account using the /api/user/signup POST request (check the payload on the Postman collection)
+- then you need to login at POST /api/user/login
+- feel free to hit the /api/message/add-messages POST or /api/message/messages GET (using the jwt as Bearer token)
+
+# Postman - Swagger
+I have provided a `collection` to import in Postman (Postman -> Collections -> Import) (it has also a prerequest script to automaticcally set the Bearer header).<br>
+If it doesn't work, NestJS comes with a Swagger addon, reachable at localhost:3000/api or localhost:3000/api-json to get a JSON file to import in Postman. Make sure to auth your request with an Authorization header with value "Bearer {YOUR_TOKEN}".
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
@@ -126,33 +155,4 @@ $ npm run test:cov
 
 Nest is [MIT licensed](LICENSE).
 
-## ----> Gianpaolo's explanations <----
-
-# Framework: NestJS
-This project was bootstrapped using `NestJS` because it's scalable, has a lot of addons and allows us to give a more solid structure to the project. Cons: it's slower in setting up than Express. ExpressJS gives us more freedom and surely is faster for a first-use but you need to be strict and keep an eye on the project struture to not fall in a mess.
-
-# Auth: simple JWT
-I used a widely npm packahe `jsonwebtoken` that gives us enough security to not let people join the service without signup. It's not complex to setup, it's sufficient for the purpose of the project. Using other modules like Passport costed too much time and I don't think is mandatory. Plus, for how NestJS works (but also Express) we can still do a little refactor and put in place another auth system.
-I didn't manage cases like double jwt existing for a user (both not expired but issued in different times).
-
-# In memory storage: TypeORM + SQLite
-I choose to use `TypeORM` because it will help us in case the project gets bigger. `SQLite` was a forced choice because it's the only dbms that allows in-memory storage. I could also use something like Redis (when i read or listen to "in-memory storage" i think to that) but I think that TypeORM is a better choice because:
-- Supports the most used DBMS out there. Changing the DMBS during early stages of development requires little to no refactoring at all. 
-- Data can be managed used the powerful TypeORM/SQL apis.
-- SQLite gives us the SQL strenght without need to setup a database, so for development purposes saves a little time.
-
-# Use the app
-- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. 
-- Second method: using docker-compose, run `docker-compose up` in the project root.
-The server can be reached at localhost:3000
-
-
-## How the app works
-- first of all you need to setup an account using the /api/user/signup POST request (check the payload on the Postman collection)
-- then you need to login at POST /api/user/login
-- feel free to hit the /api/message/add-messages POST or /api/message/messages GET (using the jwt as Bearer token)
-
-# Postman - Swagger
-I have provided a `collection` to import in Postman (Postman -> Collections -> Import) (it has also a prerequest script to automaticcally set the Bearer header).
-NestJS comes with a Swagger addon, reachable at localhost:3000/api or localhost:3000/api-json to get a JSON file to import in Postman. Make sure to auth your request with an Authorization header with value "Bearer {YOUR_TOKEN}".
 
