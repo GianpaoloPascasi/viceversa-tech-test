@@ -3,7 +3,7 @@
 
 *Please read instructions carefully*
 
-Use this file as part of the `README.md` in your repository, and invite su on github (@go-viceversa) when you're done!
+Use this file as part of the `README.md` in your repository, and invite us on github (@go-viceversa) when you're done!
 
 ## General pointers
 We are looking for an experienced engineer who found the sweet spot between pragmatism and idealism.
@@ -90,6 +90,9 @@ The server can be reached at localhost:3000
 # Postman - Swagger
 I have provided a `collection` to import in Postman (Postman -> Collections -> Import) (it has also a prerequest script to automaticcally set the Bearer header).<br>
 If it doesn't work, NestJS comes with a Swagger addon, reachable at localhost:3000/api or localhost:3000/api-json to get a JSON file to import in Postman. Make sure to auth your request with an Authorization header with value "Bearer {YOUR_TOKEN}".
+
+# Notes
+Regarding the event queue, in a real project i would have used something different from a simple setTimeout. The main problem is that when you have events in memory and a crash happens you will loose the entire queue. But for this case we have the entire db in memory, it's just an exercise (and I don't have much time to implement a queue system) so we can keep that.
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
