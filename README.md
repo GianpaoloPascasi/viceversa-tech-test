@@ -128,13 +128,26 @@ Nest is [MIT licensed](LICENSE).
 
 ## ----> Gianpaolo's explanations <----
 
-Ho usato nest perchè permette scalabilità, ha molte funzionalità modulari e permette di dare una struttura del progetto più precisa a differenza di express. 
-Può avere un tempo di setup più lungo
-Ho usato JWT come autenticazione perchè è il sistema più usato ma ho preferito non usare librire eg Passport perchè il progetto al momento non lo richiede, allo stesso tempo
-implementarlo non richiederebbe un grosso refactor per come è progettato nest (i middleware nello specifico, sarebbe stato lo stesso per express eventualmente)
-Ho usato Typeorm perchè supporta moltissimi DBMS. Dovremo dare subito una struttura precisa ai dati ma allo stesso tempo quando si passerà da un db in-memory (SQLite in questo caso) a uno tradizionale non dovremmo avere grossi problemi di refactoring (eccetto i formati dati, che per una preview come questa sono molto base).
-Dockerizzo il tutto per avviare in modo semplice il backend.
+# Framework: NestJS
+This project was bootstrapped using `NestJS` because it's scalable, has a lot of addons and allows us to give a more solid structure to the project. Cons: it's slower in setting up than Express. ExpressJS gives us more freedom and surely is faster for a first-use but you need to be strict and keep an eye on the project struture to not fall in a mess.
 
-workflow:
-1- create account
-2- login
+# Auth: simple JWT
+I used a widely npm packahe `jsonwebtoken` that gives us enough security to not let people join the service without signup. It's not complex to setup, it's sufficient for the purpose of the project. Using other modules like Passport costed too much time and I don't think is mandatory. Plus, for how NestJS works (but also Express) we can still do a little refactor and put in place another auth system.
+I didn't manage cases like double jwt existing for a user (both not expired but issued in different times).
+
+# In memory storage: TypeORM + SQLite
+I choose to use `TypeORM` because it will help us in case the project gets bigger. `SQLite` was a forced choice because it's the only dbms that allows in-memory storage. I could also use something like Redis (when i read or listen to "in-memory storage" i think to that) but I think that TypeORM is a better choice because:
+- Supports the most used DBMS out there. Changing the DMBS during early stages of development requires little to no refactoring at all. 
+- Data can be managed used the powerful TypeORM/SQL apis.
+- SQLite gives us the SQL strenght without need to setup a database, so for development purposes saves a little time.
+
+# Use the app
+- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. 
+- Second method: using docker-compose, run `docker-compose up` in the project root.
+The server can be reached at localhost:3000
+
+
+## How the app works
+- first of all you need to setup an account using the /api/user/signup POST request (check the payload on the Postman collection)
+- then you need to login at POST /api/user/login
+- feel free to hit the /api/message/add-messages POST or /api/message/messages GET (using the jwt as Bearer token)
