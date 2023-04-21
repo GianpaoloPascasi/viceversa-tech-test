@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { verify as jwtVerify } from 'jsonwebtoken';
-import { UserSession } from './user-session/user-session';
+import { UserSession } from '../user-session/user-session';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
