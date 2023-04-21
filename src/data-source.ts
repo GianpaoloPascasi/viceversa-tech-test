@@ -1,13 +1,14 @@
-import "reflect-metadata"
-import { DataSource } from "typeorm"
-import { User } from "./entity/User"
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import { MessageEntity } from './entity/message.entity';
+import { UserMessagesEntity } from './entity/user-messages.entity';
 
 export const AppDataSource = new DataSource({
-    type: "sqlite",
-    database: "database.sqlite",
-    synchronize: true,
-    logging: false,
-    entities: [User],
-    migrations: [],
-    subscribers: [],
-})
+  type: 'sqlite',
+  database: ':memory:',
+  synchronize: true,
+  logging: false,
+  entities: [MessageEntity, UserMessagesEntity],
+  migrations: [],
+  subscribers: [],
+});
