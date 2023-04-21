@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { createHash } from 'crypto';
@@ -33,13 +34,13 @@ export class UserService {
   async login(email: string, password: string) {
     const user = await this.findByEmail(email);
     if (!user) {
-      return new NotFoundException('User not found');
+      throw new NotFoundException('User not found');
     }
     if (
       user.password !==
-      createHash('sha256').update(`${password}${user.salt}`).digest().toString()
+      createHash('sha256').update(`${password}${user.salt}`).digest('hex')
     ) {
-      return new NotFoundException('Wrong password');
+      throw new UnauthorizedException('Wrong password');
     }
     return user;
   }

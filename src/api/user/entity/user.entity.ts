@@ -1,4 +1,3 @@
-import { BadRequestException } from '@nestjs/common';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { MessageEntity } from '../../message/entity/message.entity';
 import { createHash } from 'crypto';
@@ -24,7 +23,6 @@ export class UserEntity extends BaseEntity {
     this.salt = randomSalt(10);
     this.password = createHash('sha256')
       .update(password + this.salt)
-      .digest()
-      .toString();
+      .digest('hex');
   }
 }
