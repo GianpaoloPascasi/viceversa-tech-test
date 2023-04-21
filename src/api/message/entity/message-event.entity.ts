@@ -1,9 +1,11 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { MessageEventType } from '../../../model/message/event-type.enum';
 import { MessageEntity } from './message.entity';
@@ -19,6 +21,9 @@ export class MessageEventEntity extends BaseEntity {
 
   @ManyToOne(() => MessageEntity, (msg) => msg.events)
   message: MessageEntity;
+
+  @CreateDateColumn()
+  sentAt: Date;
 
   constructor(type?: MessageEventType) {
     super();

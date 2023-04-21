@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -11,11 +12,12 @@ import { MessageEventEntity } from './message-event.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 
 @Entity()
+@Index(['message', 'user'], { unique: true })
 export class MessageEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   message: string;
 
   @OneToMany(() => MessageEventEntity, (event) => event.message, {
