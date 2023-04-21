@@ -8,21 +8,23 @@ export class UserEntity extends BaseEntity {
   @PrimaryColumn()
   user: string;
 
-  @Column()
+  @Column({ select: false })
   password: string;
 
-  @Column()
+  @Column({ select: false })
   salt: string;
 
   @OneToMany(() => MessageEntity, (message) => message.user)
   messages: Array<MessageEntity>;
 
-  constructor(user: string, password: string) {
+  constructor(user?: string, password?: string) {
     super();
-    this.user = user;
-    this.salt = randomSalt(10);
-    this.password = createHash('sha256')
-      .update(password + this.salt)
-      .digest('hex');
+    if (user && password) {
+      this.user = user;
+      this.salt = randomSalt(10);
+      this.password = createHash('sha256')
+        .update(password + this.salt)
+        .digest('hex');
+    }
   }
 }

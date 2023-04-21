@@ -20,8 +20,10 @@ export class MessageEventEntity extends BaseEntity {
   @ManyToOne(() => MessageEntity, (msg) => msg.events)
   message: MessageEntity;
 
-  constructor(type: MessageEventType) {
+  constructor(type?: MessageEventType) {
     super();
-    this.eventType = type;
+    if (type) {
+      this.eventType = type;
+    }
   }
 }

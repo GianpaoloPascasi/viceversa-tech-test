@@ -29,9 +29,11 @@ export class MessageEntity extends BaseEntity {
   @ManyToOne(() => UserEntity, (user) => user.messages)
   user: UserEntity;
 
-  constructor(message: string) {
+  constructor(message?: string) {
     super();
-    this.message = message;
+    if (message) {
+      this.message = message;
+    }
   }
 
   async sendEmail() {
