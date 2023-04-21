@@ -10,6 +10,8 @@ import { MessageRepository } from '../repository/message.repository';
 import { MessageService } from './message.service';
 import { UserModule } from '../../user/user.module';
 import { UserService } from '../../user/service/user.service';
+import { UnprocessableEntityException } from '@nestjs/common';
+import { setTimeoutPromise } from '../../../utils/timers.promise';
 
 describe('MessageService', () => {
   let service: MessageService;
@@ -54,14 +56,28 @@ describe('MessageService', () => {
     expect(operation.data.messages[0].message).toBe(firstMessage);
   });
 
+  it('should have sent emails', async () => {
+    await setTimeoutPromise(1500);
+    const operation = await service.getMessages(user);
+    expect(operation.data[0].events.length).toBeGreaterThan(0);
+  });
+
   it('should retrieve last user message', async () => {
-    // await userService.createOrUpdate(user, 'test');
-    // await service.addMessages({
-    //   messages: [firstMessage],
-    //   user,
-    // });
     const operation = await service.getMessages(user);
     expect(operation.data.length).toBe(1);
     expect(operation.data[0].message).toBe(firstMessage);
+  });
+
+  it('should not allow double sending', async () => {
+    await service.addMessages({
+      messages: ['Hello friend'],
+      user,
+    });
+    await expect(
+      service.addMessages({
+        messages: ['Hello Mario'],
+        user,
+      }),
+    ).rejects.toThrow();
   });
 });

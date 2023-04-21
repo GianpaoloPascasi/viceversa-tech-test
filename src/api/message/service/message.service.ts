@@ -1,14 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { AppDataSource } from '../../../data-source';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { AddMessagesBody } from '../../../model/message/add.model';
 import { Response } from '../../../model/response.model';
 import { MessageEntity } from '../entity/message.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { MessageRepository } from '../repository/message.repository';
 import { UserService } from '../../user/service/user.service';
+import { interval } from 'rxjs';
 
 @Injectable()
 export class MessageService {
+  private logger: Logger = new Logger(MessageService.name);
+
   constructor(
     private readonly repository: MessageRepository,
     private userService: UserService,
@@ -19,8 +26,17 @@ export class MessageService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    await this.repository.bulkCreateMessages(user, body.messages);
+    if (user.messages.some((msg) => !msg.notified)) {
+      throw new UnprocessableEntityException(
+        'Some messages are still in queue',
+      );
+    }
+    const messagesToNotify = await this.repository.bulkCreateMessages(
+      user,
+      body.messages,
+    );
     const withMessages = await this.userService.findByEmail(body.user, true);
+    setTimeout(() => this.sendEmail(messagesToNotify), 1000);
     return {
       code: 200,
       data: withMessages,
@@ -38,5 +54,12 @@ export class MessageService {
       msg: 'ok',
       data: user.messages,
     };
+  }
+
+  async sendEmail(messagesToNotify: Array<MessageEntity>) {
+    for (const msg of messagesToNotify) {
+      this.logger.log(`email sent to ${msg.user.user} with ${msg.message}`);
+      await msg.sendEmail();
+    }
   }
 }

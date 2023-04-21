@@ -18,8 +18,13 @@ export class MessageEntity extends BaseEntity {
   @Column({ unique: true })
   message: string;
 
-  @OneToMany(() => MessageEventEntity, (event) => event.message)
+  @OneToMany(() => MessageEventEntity, (event) => event.message, {
+    eager: true,
+  })
   events: Array<MessageEventEntity>;
+
+  @Column({ default: false })
+  notified: boolean;
 
   @ManyToOne(() => UserEntity, (user) => user.messages)
   user: UserEntity;
@@ -30,7 +35,10 @@ export class MessageEntity extends BaseEntity {
   }
 
   async sendEmail() {
-    this.events.push(new MessageEventEntity(MessageEventType.email));
+    const evt = new MessageEventEntity(MessageEventType.email);
+    evt.message = this;
+    await evt.save();
+    this.notified = true;
     await this.save();
   }
 }
