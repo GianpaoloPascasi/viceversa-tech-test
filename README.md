@@ -128,3 +128,9 @@ Nest is [MIT licensed](LICENSE).
 
 ## ----> Gianpaolo's explanations <----
 
+Ho usato nest perchè permette scalabilità, ha molte funzionalità modulari e permette di dare una struttura del progetto più precisa a differenza di express. 
+Può avere un tempo di setup più lungo
+Ho usato JWT come autenticazione perchè è il sistema più usato ma ho preferito non usare librire eg Passport perchè il progetto al momento non lo richiede, allo stesso tempo
+implementarlo non richiederebbe un grosso refactor per come è progettato nest (i middleware nello specifico, sarebbe stato lo stesso per express eventualmente)
+Ho usato Typeorm perchè supporta moltissimi DBMS. Dovremo dare subito una struttura precisa ai dati ma allo stesso tempo quando si passerà da un db in-memory (SQLite in questo caso) a uno tradizionale non dovremmo avere grossi problemi di refactoring (eccetto i formati dati, che per una preview come questa sono molto base).
+Dockerizzo il tutto per avviare in modo semplice il backend.
