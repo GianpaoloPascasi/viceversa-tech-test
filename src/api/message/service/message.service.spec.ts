@@ -18,6 +18,7 @@ describe('MessageService', () => {
   let userService: UserService;
 
   const user = 'test@test.com';
+  const user1 = 'test1@test.com';
   const firstMessage = 'test';
 
   beforeAll(async () => {
@@ -39,6 +40,7 @@ describe('MessageService', () => {
     service = module.get<MessageService>(MessageService);
     userService = module.get<UserService>(UserService);
     await userService.createOrUpdate(user, 'test');
+    await userService.createOrUpdate(user1, 'test');
   });
 
   it('should be defined', () => {
@@ -77,6 +79,21 @@ describe('MessageService', () => {
       service.addMessages({
         messages: ['Hello Mario'],
         user,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it('should check unique messages for different users', async () => {
+    await expect(
+      service.addMessages({
+        messages: ['Hello Mario'],
+        user: user1,
+      }),
+    ).resolves.not.toThrow();
+    await expect(
+      service.addMessages({
+        messages: ['Hello Mario'],
+        user: user1,
       }),
     ).rejects.toThrow();
   });

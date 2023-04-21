@@ -30,14 +30,13 @@ export class UserController {
       process.env.JWT_SECRET ?? 'test',
       { expiresIn: '1h' },
     );
-    response.setHeader('authorization', 'Bearer: ' + jwtToken);
-    return {
+    return response.setHeader('authorization', 'Bearer: ' + jwtToken).json({
       code: 200,
       msg: 'ok',
       data: {
         jwt: jwtToken,
         user: login.user,
       },
-    };
+    });
   }
 }

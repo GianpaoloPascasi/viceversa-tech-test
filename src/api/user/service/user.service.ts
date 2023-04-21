@@ -13,7 +13,7 @@ import { UserEntity } from '../entity/user.entity';
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    public userMessagesRepository: Repository<UserEntity>, // public because we can get it and do custom queries if needed anywhere
+    public userRepository: Repository<UserEntity>, // public because we can get it and do custom queries if needed anywhere
   ) {}
 
   async createOrUpdate(user: string, password?: string) {
@@ -32,7 +32,13 @@ export class UserService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.findByEmail(email);
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .select('user.user')
+      .addSelect('user.password')
+      .addSelect('user.salt')
+      .where('user.user = :email', { email })
+      .getOne();
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -46,7 +52,7 @@ export class UserService {
   }
 
   async findByEmail(user: string, fetchMessages = false) {
-    return this.userMessagesRepository.findOne({
+    return this.userRepository.findOne({
       where: { user },
       relations: { messages: fetchMessages },
     });
