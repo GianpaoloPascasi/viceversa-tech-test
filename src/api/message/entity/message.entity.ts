@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { MessageEventType } from '../../../model/message/event-type.enum';
 import { MessageEventEntity } from './message-event.entity';
-import { UserMessagesEntity } from './user-message.entity';
+import { UserEntity } from '../../user/entity/user.entity';
 
 @Entity()
 export class MessageEntity extends BaseEntity {
@@ -21,8 +21,8 @@ export class MessageEntity extends BaseEntity {
   @OneToMany(() => MessageEventEntity, (event) => event.message)
   events: Array<MessageEventEntity>;
 
-  @ManyToOne(() => UserMessagesEntity, (user) => user.messages)
-  user: UserMessagesEntity;
+  @ManyToOne(() => UserEntity, (user) => user.messages)
+  user: UserEntity;
 
   constructor(message: string) {
     super();

@@ -17,6 +17,6 @@ export class MessageController {
 
   @Get('messages')
   messages() {
-    return this.messageService.getMessages(this.session.email);
+    return this.messageService.getMessages(this.session.user);
   }
 }
