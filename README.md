@@ -151,3 +151,8 @@ The server can be reached at localhost:3000
 - first of all you need to setup an account using the /api/user/signup POST request (check the payload on the Postman collection)
 - then you need to login at POST /api/user/login
 - feel free to hit the /api/message/add-messages POST or /api/message/messages GET (using the jwt as Bearer token)
+
+# Postman - Swagger
+I have provided a `collection` to import in Postman (Postman -> Collections -> Import) (it has also a prerequest script to automaticcally set the Bearer header).
+NestJS comes with a Swagger addon, reachable at localhost:3000/api or localhost:3000/api-json to get a JSON file to import in Postman. Make sure to auth your request with an Authorization header with value "Bearer {YOUR_TOKEN}".
+
