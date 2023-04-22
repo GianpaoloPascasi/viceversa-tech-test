@@ -30,6 +30,13 @@ describe('UserService', () => {
   it('should signup a user', async () => {
     const user = await service.createOrUpdate(email, password);
     expect(user).toBeDefined();
+  });
+
+  it('should check user password and salt', async () => {
+    const user = await service.userRepository.findOne({
+      where: { user: email },
+      select: ['password', 'salt'],
+    });
     expect(user.salt).toBeDefined();
     expect(user.salt.length).toBeGreaterThan(0);
     expect(user.password.length).toBeGreaterThan(0);

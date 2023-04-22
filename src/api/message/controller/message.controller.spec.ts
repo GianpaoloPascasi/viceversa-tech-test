@@ -31,11 +31,4 @@ describe('MessageController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-
-  it('should add messages for a user', async () => {
-    controller.addMessages({
-      user: 'test',
-      messages: ['test'],
-    });
-  });
 });

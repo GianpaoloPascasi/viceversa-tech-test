@@ -5,12 +5,11 @@ import {
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { AddMessagesBody } from '../../../model/message/add.model';
-import { Response } from '../../../model/response.model';
+import { ApiResponse } from '../../../model/response.model';
 import { MessageEntity } from '../entity/message.entity';
 import { UserEntity } from '../../user/entity/user.entity';
 import { MessageRepository } from '../repository/message.repository';
 import { UserService } from '../../user/service/user.service';
-import { interval } from 'rxjs';
 
 @Injectable()
 export class MessageService {
@@ -21,7 +20,7 @@ export class MessageService {
     private userService: UserService,
   ) {}
 
-  async addMessages(body: AddMessagesBody): Promise<Response<UserEntity>> {
+  async addMessages(body: AddMessagesBody): Promise<ApiResponse<UserEntity>> {
     const user = await this.userService.findByEmail(body.user, true);
     if (!user) {
       throw new NotFoundException('User not found');
@@ -43,7 +42,7 @@ export class MessageService {
       msg: 'ok',
     };
   }
-  async getMessages(email: string): Promise<Response<Array<MessageEntity>>> {
+  async getMessages(email: string): Promise<ApiResponse<Array<MessageEntity>>> {
     const user = await this.userService.findByEmail(email, true);
     if (!user) {
       throw new NotFoundException('User not found');
