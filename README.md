@@ -77,7 +77,7 @@ I choose to use `TypeORM` because it will help us in case the project gets bigge
 - SQLite gives us the SQL strenght without need to setup a database, so for development purposes saves a little time.
 
 # Use the app
-- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. 
+- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. (PS there is a env variable for the JWT which by default is hardcoded as "test" so you don't need to add anything to your env) 
 - Second method: using docker-compose, run `docker-compose up` in the project root.
 The server can be reached at localhost:3000
 
