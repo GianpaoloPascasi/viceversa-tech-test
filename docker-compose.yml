@@ -10,3 +10,4 @@ services:
       -  /usr/src/app/node_modules
     environment:
       - JWT_SECRET=my_super_secret
+      - HTTP_PORT=3000
