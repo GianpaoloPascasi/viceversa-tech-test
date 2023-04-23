@@ -11,27 +11,33 @@ import {
 import { MessageEventType } from '../../../model/message/event-type.enum';
 import { MessageEventEntity } from './message-event.entity';
 import { UserEntity } from '../../user/entity/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 @Index(['message', 'user'], { unique: true })
 export class MessageEntity extends BaseEntity {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   message: string;
 
+  @ApiProperty()
   @OneToMany(() => MessageEventEntity, (event) => event.message, {
     eager: true,
   })
   events: Array<MessageEventEntity>;
 
+  @ApiProperty()
   @Column({ default: false })
   notified: boolean;
 
   @ManyToOne(() => UserEntity, (user) => user.messages)
   user: UserEntity;
 
+  @ApiProperty()
   @CreateDateColumn()
   createdAt: Date;
 

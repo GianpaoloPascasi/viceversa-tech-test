@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiSecurity } from '@nestjs/swagger';
 import { AddMessagesBody } from '../../../model/message/add.model';
 import { AuthGuard } from '../../auth/auth/auth.guard';
 import { UserSession } from '../../auth/user-session/user-session';
@@ -23,6 +23,7 @@ export class MessageController {
   @ApiBody({
     type: AddMessagesBody,
   })
+  @ApiSecurity('bearer')
   @Post('add-messages')
   addMessages(@Body() body: AddMessagesBody) {
     if (this.session.user !== body.user) {
@@ -31,6 +32,7 @@ export class MessageController {
     return this.messageService.addMessages(body);
   }
 
+  @ApiSecurity('bearer')
   @Get('messages')
   messages() {
     return this.messageService.getMessages(this.session.user);

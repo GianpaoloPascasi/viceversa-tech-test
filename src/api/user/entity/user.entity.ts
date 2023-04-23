@@ -2,9 +2,11 @@ import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { MessageEntity } from '../../message/entity/message.entity';
 import { createHash } from 'crypto';
 import { randomSalt } from '../../../utils/randomSalt';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class UserEntity extends BaseEntity {
+  @ApiProperty()
   @PrimaryColumn()
   user: string;
 
@@ -14,6 +16,7 @@ export class UserEntity extends BaseEntity {
   @Column({ select: false })
   salt: string;
 
+  @ApiProperty()
   @OneToMany(() => MessageEntity, (message) => message.user)
   messages: Array<MessageEntity>;
 

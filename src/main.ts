@@ -7,15 +7,15 @@ const PORT = 3000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
     .setTitle('Viceversa tech test')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  app.setGlobalPrefix('/api');
 
   await app.listen(PORT);
   Logger.log(`App started on port ${PORT}`, 'Server');

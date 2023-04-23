@@ -64,11 +64,11 @@ In the future we expect more events to be triggered, of different kind (ex. even
 ## ----> Gianpaolo's explanations <----
 
 # Framework: NestJS
-This project was bootstrapped using `NestJS` because it's scalable, has a lot of addons and allows us to give a more solid structure to the project. Cons: it's slower in setting up than Express. ExpressJS gives us more freedom and surely is faster for a first-use but you need to be strict and keep an eye on the project struture to not fall in a mess.
+This project was bootstrapped using `NestJS` because it's scalable, has a lot of addons and allows us to give a more solid structure to the project. Cons: it's slower in setting up than Express. ExpressJS gives us more freedom and surely is faster for a first-use but you need to be disciplined and keep the project structure under control to not fall in a mess when the codebase grows.
 
-# Auth: simple JWT
-I used a widely npm packahe `jsonwebtoken` that gives us enough security to not let people join the service without signup. It's not complex to setup, it's sufficient for the purpose of the project. Using other modules like Passport costed too much time and I don't think is mandatory. Plus, for how NestJS works (but also Express) we can still do a little refactor and put in place another auth system.
-I didn't manage cases like double jwt existing for a user (both not expired but issued in different times).
+# Auth: JWT
+JWT is the best method to authenticate requests in a RESTful service. I used a widely downloaded npm packahe `jsonwebtoken` that gives us enough security to not let people join the service without being authenticated. It's not complex to setup and it's sufficient for the purpose of the project. Using other modules like Passport costed too much time. Plus, for how NestJS works we can still do a little refactor and put in place another auth system.
+I didn't manage cases like double valid issued jwts for a user (both not expired but issued in different times).
 
 # In memory storage: TypeORM + SQLite
 I choose to use `TypeORM` because it will help us in case the project gets bigger. `SQLite` was a forced choice because it's the only dbms that allows in-memory storage. I could also use something like Redis (when i read or listen to "in-memory storage" i think to that) but I think that TypeORM is a better choice because:
@@ -76,14 +76,14 @@ I choose to use `TypeORM` because it will help us in case the project gets bigge
 - Data can be managed used the powerful TypeORM/SQL apis.
 - SQLite gives us the SQL strenght without need to setup a database, so for development purposes saves a little time.
 
-# Use the app
-- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. (PS there is a env variable for the JWT which by default is hardcoded as "test" so you don't need to add anything to your env) 
+# Setup the service
+- First method: (only if you have node >= 18LTS) cd in the project root and first run `npm install` then `npm start`. (PS there is a env variable for the JWT secret which by default is hardcoded as "test" so you don't need to add anything to your env) 
 - Second method: using docker-compose, run `docker-compose up` in the project root.
-The server can be reached at localhost:3000
+The server can be reached at localhost:3000.
 
 
-## How the app works
-- first of all you need to setup an account using the /api/user/signup POST request (check the payload on the Postman collection)
+## Consuming the service
+- First of all you need to create an account using the /api/user/signup POST request (check the payload on the Postman collection)
 - then you need to login at POST /api/user/login
 - feel free to hit the /api/message/add-messages POST or /api/message/messages GET (using the jwt as Bearer token)
 
@@ -92,7 +92,7 @@ I have provided a `collection` to import in Postman (Postman -> Collections -> I
 If it doesn't work, NestJS comes with a Swagger addon, reachable at localhost:3000/api or localhost:3000/api-json to get a JSON file to import in Postman. Make sure to auth your request with an Authorization header with value "Bearer {YOUR_TOKEN}".
 
 # Notes
-Regarding the event queue, in a real project i would have used something different from a simple setTimeout. The main problem is that when you have events in memory and a crash happens you will loose the entire queue. But for this case we have the entire db in memory, it's just an exercise (and I don't have much time to implement a queue system) so we can keep that.
+Regarding the events notifications, in a real project i would have used something different from a simple setTimeout. The main problem is that when you have events in memory and a crash happens you will loose the entire queue. But for this case we have the entire db in memory, it's just an exercise so we can keep that.
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
