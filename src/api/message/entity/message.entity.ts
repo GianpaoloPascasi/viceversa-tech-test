@@ -1,6 +1,7 @@
 import {
   BaseEntity,
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   ManyToOne,
@@ -30,6 +31,9 @@ export class MessageEntity extends BaseEntity {
 
   @ManyToOne(() => UserEntity, (user) => user.messages)
   user: UserEntity;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   constructor(message?: string) {
     super();
